@@ -122,7 +122,7 @@ int basic_example_main()
 		ret = dac_test(ad5421_desc, dac);
 		if (ret) {goto error;}
 
-		dac = (dac + 0x1111) % 0x10000;
+		dac = (dac + 0x1111) % 0xFFFF;
 		no_os_mdelay(500);
 	}
 
