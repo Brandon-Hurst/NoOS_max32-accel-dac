@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/workspace/no-OS/drivers/accel/adxl355/", "C:/workspace/no-OS/drivers/dac/ad5421/", "C:/workspace/no-OS/drivers/platform/maxim/max32670/", "C:/workspace/no-OS/drivers/platform/maxim/max32670/../common/", "C:/workspace/no-OS/include", "C:/MaximSDK/Libraries/CMSIS/Device/Maxim/MAX32670/Include/", "C:/MaximSDK/Libraries/CMSIS/Include/", "C:/MaximSDK/Libraries/PeriphDrivers/Include/MAX32670/", "C:/MaximSDK/Libraries/PeriphDrivers/Include/MAX32670//", "C:/MaximSDK/Libraries/PeriphDrivers/Source/AES/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/CRC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/DMA/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/FLC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/GPIO/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/I2C/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/I2S/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/ICC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/RTC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/SPI/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/TMR/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/TRNG/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/UART/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/WDT/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/common/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/examples/basic/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/platform/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/platform/maxim/"
+            ],
+            "defines": [
+                "BASIC_EXAMPLE=1", "DISABLE_SECURE_SOCKET", "MAXIM_PLATFORM", "NO_OS_PROJECT=z-adxl-max32670-ad5421", "NO_OS_VERSION=tags/last_commit-b4e5324c1-modified", "TARGET=max32670", "TARGET_NUM=32670", "TARGET_REV=0x4131"
+            ],
+            "compilerPath": "C:/MaximSDK/Tools/GNUTools/10.3/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "gcc-arm"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "C:/workspace/no-OS/drivers/accel/adxl355/", "C:/workspace/no-OS/drivers/dac/ad5421/", "C:/workspace/no-OS/drivers/platform/maxim/max32670/", "C:/workspace/no-OS/drivers/platform/maxim/max32670/../common/", "C:/workspace/no-OS/include", "C:/MaximSDK/Libraries/CMSIS/Device/Maxim/MAX32670/Include/", "C:/MaximSDK/Libraries/CMSIS/Include/", "C:/MaximSDK/Libraries/PeriphDrivers/Include/MAX32670/", "C:/MaximSDK/Libraries/PeriphDrivers/Include/MAX32670//", "C:/MaximSDK/Libraries/PeriphDrivers/Source/AES/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/CRC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/DMA/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/FLC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/GPIO/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/I2C/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/I2S/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/ICC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/RTC/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/SPI/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/TMR/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/TRNG/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/UART/", "C:/MaximSDK/Libraries/PeriphDrivers/Source/WDT/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/common/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/examples/basic/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/platform/", "C:/workspace/no-OS/projects/z-adxl-max32670-ad5421/src/platform/maxim/"
+            ],
+            "defines": [
+                "BASIC_EXAMPLE=1", "DISABLE_SECURE_SOCKET", "MAXIM_PLATFORM", "NO_OS_PROJECT=z-adxl-max32670-ad5421", "NO_OS_VERSION=tags/last_commit-b4e5324c1-modified", "TARGET=max32670", "TARGET_NUM=32670", "TARGET_REV=0x4131"
+            ],
+            "compilerPath": "C:/MaximSDK/Tools/GNUTools/10.3/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "linux-gcc-arm"
+        }
+    ],
+    "version": 4
+}

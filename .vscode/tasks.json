@@ -1,0 +1,30 @@
+{
+    "tasks": [
+        {
+            "label": "maxim Run",
+            "type": "shell",
+            "command": "make run -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670",
+            "problemMatcher": []
+        },
+        {
+            "label": "maxim Build",
+            "type": "shell",
+            "command": "make -j10 -C \"${workspaceFolder}\"",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "clean build",
+            "type": "shell",
+            "command": "rm -rf build/app/z-adxl-max32670-ad5421/ && make -j10 -C \"${workspaceFolder}\" ",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
