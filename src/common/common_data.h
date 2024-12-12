@@ -38,7 +38,7 @@
 /******************************************************************************/
 #include "platform_includes.h"
 #include "ad5421.h"
-#include "adxl355.h"
+#include "adxl345.h"
 
 #ifdef MAXIM_PLATFORM
 #include "maxim/parameters.h"
@@ -47,11 +47,12 @@
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
 /******************************************************************************/
-extern struct no_os_uart_init_param ad5421_uart_ip;
+extern struct no_os_uart_init_param uart_ip;
 extern struct no_os_spi_init_param ad5421_spi_ip;
-extern struct ad5421_init_param ad5421_ip;
+extern struct no_os_spi_init_param adxl345_spi_ip;
+extern struct no_os_i2c_init_param adxl345_i2c_ip;
 
-extern struct no_os_spi_init_param adxl355_spi_ip;
-extern struct adxl355_init_param adxl355_ip;
+extern struct ad5421_init_param ad5421_ip;
+extern struct adxl345_init_param adxl345_ip;
 
 #endif /* __COMMON_DATA_H__ */

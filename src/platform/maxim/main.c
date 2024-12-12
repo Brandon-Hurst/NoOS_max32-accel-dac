@@ -52,11 +52,12 @@ int main()
 	int ret = -EINVAL;
 
 	ad5421_ip.spi_init = ad5421_spi_ip;
-	adxl355_ip.comm_init.spi_init = adxl355_spi_ip;
+	adxl345_ip.i2c_init = adxl345_i2c_ip;
+	adxl345_ip.spi_init = adxl345_spi_ip;
 
 	struct no_os_uart_desc *uart_desc;
 
-	ret = no_os_uart_init(&uart_desc, &ad5421_uart_ip);
+	ret = no_os_uart_init(&uart_desc, &uart_ip);
 	if (ret)
 		return ret;
 

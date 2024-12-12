@@ -10,6 +10,8 @@ TARGET ?= max32670
 ADXL355 ?= y
 AD5421 ?= y
 
+CFLAGS+= -ggdb -O0
+
 include ../../tools/scripts/generic_variables.mk
 
 include src.mk

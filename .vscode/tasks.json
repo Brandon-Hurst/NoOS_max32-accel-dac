@@ -9,22 +9,8 @@
         {
             "label": "maxim Build",
             "type": "shell",
-            "command": "make -j10 -C \"${workspaceFolder}\"",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            }
-        },
-        {
-            "label": "clean build",
-            "type": "shell",
-            "command": "rm -rf z-adxl-max32670-ad5421.* build/objs/z-adxl-max32670-ad5421/build/app/z-adxl-max32670-ad5421/src && make -j10 -C \"${workspaceFolder}\" ",
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "command": "make -j10 -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670",
+            "group": "build"
         }
     ]
 }

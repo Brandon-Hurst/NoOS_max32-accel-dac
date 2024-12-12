@@ -1,4 +1,8 @@
 {
     "cortex-debug.gdbPath": "C:/MaximSDK/Tools/GNUTools/10.3/bin/arm-none-eabi-gdb",
-    "cortex-debug.openocdPath": "C:/MaximSDK/Libraries/../Tools/OpenOCD/openocd"
+    "cortex-debug.openocdPath": "C:/MaximSDK/Libraries/../Tools/OpenOCD/openocd",
+    "cortex-debug.variableUseNaturalFormat": false,
+    "files.associations": {
+        "basic_example_main.h": "c"
+    }
 }

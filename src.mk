@@ -45,5 +45,5 @@ SRCS += $(DRIVERS)/api/no_os_gpio.c \
 INCS += $(DRIVERS)/dac/ad5421/ad5421.h
 SRCS +=	$(DRIVERS)/dac/ad5421/ad5421.c
 
-INCS += $(DRIVERS)/accel/adxl355/adxl355.h
-SRCS +=	$(DRIVERS)/accel/adxl355/adxl355.c
+INCS += $(DRIVERS)/accel/adxl345/adxl345.h
+SRCS +=	$(DRIVERS)/accel/adxl345/adxl345.c

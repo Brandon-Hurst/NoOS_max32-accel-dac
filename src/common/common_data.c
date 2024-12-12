@@ -39,7 +39,7 @@
 /******************************************************************************/
 /********************** Macros and Constants Definitions **********************/
 /******************************************************************************/
-struct no_os_uart_init_param ad5421_uart_ip = {
+struct no_os_uart_init_param uart_ip = {
 	.device_id = UART_DEVICE_ID,
 	.irq_id = UART_IRQ_ID,
 	.asynchronous_rx = true,
@@ -51,8 +51,10 @@ struct no_os_uart_init_param ad5421_uart_ip = {
 	.platform_ops = UART_OPS,
 };
 
+
+/***** AD5421 DEVICE SETUP *****/
 struct no_os_spi_init_param ad5421_spi_ip = {
-	.device_id = SPI_DEVICE_ID,
+	.device_id = AD5421_SPI_DEVICE_ID,
 	.max_speed_hz = SPI_BAUDRATE,
 	.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
 	.mode = NO_OS_SPI_MODE_1,
@@ -60,33 +62,6 @@ struct no_os_spi_init_param ad5421_spi_ip = {
 	.chip_select = AD5421_SPI_CS,
 	.extra = SPI_EXTRA,
 };
-
-struct no_os_spi_init_param adxl355_spi_ip = {
-	.device_id = SPI_DEVICE_ID,
-	.max_speed_hz = SPI_BAUDRATE,
-	.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
-	.mode = NO_OS_SPI_MODE_1,
-	.platform_ops = SPI_OPS,
-	.chip_select = ADXL355_SPI_CS,
-	.extra = SPI_EXTRA,
-};
-
-/**
- * @struct no_os_gpio_init_param
- * @brief Structure holding the parameters for GPIO initialization.
- */
-// struct no_os_gpio_init_param {
-// 	/** Port number */
-// 	int32_t		port;
-// 	/** GPIO number */
-// 	int32_t		number;
-// 	/** Pull up/down resistor configuration */
-// 	enum no_os_gpio_pull_up pull;
-// 	/** GPIO platform specific functions */
-// 	const struct no_os_gpio_platform_ops *platform_ops;
-// 	/** GPIO extra parameters (device specific) */
-// 	void		*extra;
-// };
 
 struct no_os_gpio_init_param ad5421_ldac_ip = {
 	.port = GPIO_LDAC_PORT_NUM,
@@ -110,7 +85,31 @@ struct ad5421_init_param ad5421_ip = {
 	.gpio_faultin = &ad5421_faultin_ip,
 };
 
-struct adxl355_init_param adxl355_ip = {
-	.comm_type = ADXL355_SPI_COMM,
-	.dev_type = ID_ADXL355,
+/***** ADXL355 DEVICE SETUP *****/
+struct no_os_spi_init_param adxl345_spi_ip = {
+	.device_id = ADXL_SPI_DEVICE_ID,
+	.max_speed_hz = SPI_BAUDRATE,
+	.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
+	.mode = NO_OS_SPI_MODE_3,
+	.platform_ops = SPI_OPS,
+	.chip_select = ADXL_SPI_CS,
+	.extra = SPI_EXTRA,
+};
+
+struct no_os_i2c_init_param adxl345_i2c_ip = {
+	.device_id = I2C_PORT,
+	.max_speed_hz = 400000,
+	.platform_ops = I2C_OPS,
+	.extra = I2C_EXTRA,
+	// no slave addr b/c acting as master
+	.slave_address = ADXL345_ADDRESS,
+};
+
+struct adxl345_init_param adxl345_ip = {
+	.i2c_init = &adxl345_i2c_ip,
+	.spi_init = &adxl345_spi_ip,
+	.dev_type = ID_ADXL345,
+	.communication_type = ADXL345_SPI_COMM,
+	.selected_range =  ADXL345_RANGE_PM_16G, // 2, 4, 8 , or 16G
+	.full_resolution_set = 1
 };

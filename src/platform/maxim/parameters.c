@@ -44,9 +44,13 @@ struct max_uart_init_param uart_extra_ip = {
 };
 
 struct max_spi_init_param spi_extra_ip  = {
-	.num_slaves = 2,
+	.num_slaves = 1,
 	.polarity = SPI_SS_POL_LOW,
 	// .vssel = MXC_GPIO_VSSEL_VDDIOH,
+};
+
+struct max_i2c_init_param i2c_extra_ip = {
+	.vssel = MXC_GPIO_VSSEL_VDDIOH,
 };
 
 struct max_gpio_init_param ad5421_gpio_extra_ldac_ip = {

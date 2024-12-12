@@ -39,6 +39,7 @@
 /******************************************************************************/
 #include "maxim_irq.h"
 #include "maxim_spi.h"
+#include "maxim_i2c.h"
 #include "maxim_gpio.h"
 #include "maxim_uart.h"
 #include "maxim_uart_stdio.h"
@@ -69,13 +70,20 @@
 #elif (TARGET_NUM == 32670)
     #define UART_DEVICE_ID  0
     #define UART_IRQ_ID     UART0_IRQn
-    #define SPI_DEVICE_ID   0
-    #define AD5421_SPI_CS   0
-    #define ADXL355_SPI_CS  1
+
+    // SPI Device for AD5421
+    #define AD5421_SPI_DEVICE_ID    0
+    #define AD5421_SPI_CS           0
+    #define ADXL_SPI_DEVICE_ID      1
+    #define ADXL_SPI_CS             0
+
     #define GPIO_FAULTIN_PORT_NUM   0
     #define GPIO_FAULTIN_PIN_NUM    29
     #define GPIO_LDAC_PORT_NUM      0
     #define GPIO_LDAC_PIN_NUM       30
+
+    // I2C Port for ADXL345 if used
+    #define I2C_PORT        0
 #endif
 
 // Platform setup for UART
@@ -85,8 +93,13 @@
 
 // Platform setup for SPI
 #define SPI_BAUDRATE    1000000
-#define SPI_EXTRA       &spi_extra_ip
 #define SPI_OPS         &max_spi_ops
+#define SPI_EXTRA       &spi_extra_ip
+
+// Platform setup for I2C
+#define I2C_RATE        400000
+#define I2C_OPS         &max_i2c_ops
+#define I2C_EXTRA       &i2c_extra_ip
 
 // Platform setup for GPIOs
 #define GPIO_OPS        &max_gpio_ops
@@ -95,6 +108,7 @@
 
 extern struct max_uart_init_param uart_extra_ip;
 extern struct max_spi_init_param spi_extra_ip;
+extern struct max_i2c_init_param i2c_extra_ip;
 extern struct max_gpio_init_param ad5421_gpio_extra_ldac_ip;
 extern struct max_gpio_init_param ad5421_gpio_extra_faultin_ip;
 
