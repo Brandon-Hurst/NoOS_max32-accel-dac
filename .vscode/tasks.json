@@ -3,14 +3,12 @@
         {
             "label": "maxim Run",
             "type": "shell",
-            "command": "make run -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670",
-            "problemMatcher": []
+            "command": "make run -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670"
         },
         {
             "label": "maxim Build",
             "type": "shell",
-            "command": "make -j10 -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670",
-            "group": "build"
+            "command": "make -C \"${workspaceFolder}\" PLATFORM=maxim TARGET=max32670"
         }
     ]
 }

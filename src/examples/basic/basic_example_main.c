@@ -156,9 +156,8 @@ int adxl_test(struct adxl38x_dev *adxl_desc, float* x, float* y, float* z) {
 	*x = adxl38x_struct_to_float(&xf);
 	*y = adxl38x_struct_to_float(&yf);
 	*z = adxl38x_struct_to_float(&zf);
-	pr_info(" x = %f g\n", *x);
-	pr_info(" y = %f g\n", *y);
-	pr_info(" z = %f g\n", *z);
+	pr_info(" x = %f g, y = %f g, z = %f g\n", *x, *y, *z);
+	pr_info("accel_z: \t%f\n", *z);
 
 	return 0;
 }

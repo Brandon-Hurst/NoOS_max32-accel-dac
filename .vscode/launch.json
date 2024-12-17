@@ -32,11 +32,7 @@
             ],
             "searchDir": [ "C:/MaximSDK/Libraries/../Tools/OpenOCD/scripts" ],
             "runToEntryPoint": "main",
-            "showDevDebugOutput": "none",
-            "liveWatch": {
-                "enabled": true,
-                "samplesPerSecond": 4
-            }
+            "showDevDebugOutput": "none"
         }
     ]
 }

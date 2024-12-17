@@ -1,9 +1,9 @@
 
 # 4-20mA Accelerometer-Correlated Industrial Output
 
-This project uses the MAX32670 microcontroller with the ADXL345 accelerometer and AD5421 4-20mA DAC. The DAC output is correlated to the Z-axis of the accelerometer because it's usually the easiest to think about. When the ADXL IC is sitting flat on a table, for example, the normal vector in the Z-direction points fully up giving a normalized dot product of 1. Therefore, under these conditions the Z component of the ADXL output is +1.0. If you flip the ADXL, the Z component goes to -1.0.
+This project uses the MAX32670 microcontroller with the ADXL382 accelerometer and AD5421 4-20mA DAC. The DAC output is correlated to the Z-axis of the accelerometer because it's usually the easiest to think about. When the ADXL IC is sitting flat on a table, for example, the normal vector in the Z-direction points fully up giving a normalized dot product of 1. Therefore, under these conditions the Z component of the ADXL output is +1.0. If you flip the ADXL, the Z component goes to -1.0.
 
-![Final HW Powered](img/final-hw-on.jpg)
+![Final HW Powered](img/v2/system.jpg)
 
 ![Output on Serial Port](img/serial-output.png)
 
@@ -12,10 +12,10 @@ This project uses the MAX32670 microcontroller with the ADXL345 accelerometer an
 ### Boards
 There are 4 boards currently involved in doing the setup for this project.
 
-- MAX32670 ARM Cortex M4F Microcontroller
-- AD5421 4-20mA DAC
-- EVAL-SDP-CB1Z (just for powering the AD5421's DVDD at the moment)
-- ADXL345 Accelerometer
+- [MAX32670EVKIT](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html) ARM Cortex M4F Microcontroller
+- [EVAL-AD5421](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/eval-ad5421.html) 4-20mA DAC
+- [EVAL-SDP-CB1Z](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/SDP-B.html) (just for powering the AD5421's DVDD at the moment)
+- [EVAL-ADXL382](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/eval-adxl382.html) MEMs Accelerometer
 
 > [!note]
 > Before proceeding, please ensure the "BOOT LD EN" switch on the MAX32670 EV Kit is set to "DIS" to disable the bootloader.
@@ -46,17 +46,17 @@ To work with the AD5421, TP1-6 (for SPI and FAULTIN/LDAC) and TP19 should be sol
 
 #### SPI Connection
 
-The EVAL-AD5421SDZ platform must be connected to the SPI0 bus on MAX32670. There are silkscreen markings for SPI0 on the MAX32670 EVKit. Connect them as follows for AD5421:
+The EVAL-AD5421SDZ platform must be connected to the SPI1 bus on MAX32670. Connect these MCU pins on GPIO0 for AD5421:
 
-- SS0 --> TP1
-- SCK --> TP2
-- MOSI --> TP3
-- MISO --> TP4
+- P0.17 --> TP1
+- P0.16 --> TP2
+- P0.15 --> TP3
+- P0.14 --> TP4
 - LDAC (GPIO P0.30 or GND) --> TP6
 - FAULTIN (optional) --> TP5 (unused, may be monitored with an oscilloscope)
 - GND (COM or TP19) - Any GND pin on the MAX32670 EVKit
 
-![AD5421-MAX32670 EV KIT Connections](img/ad5421-max32670.jpg)
+![AD5421-MAX32670 EV KIT Connections](img/v2/ad5421-spi1.jpg)
 
 #### Jumper Settings for the AD5421
 
@@ -68,32 +68,40 @@ The following jumpers are set by default for the AD5421 kit:
 - LK6
 - LK7 (use onboard resistor if not provided externally on LOOP+/LOOP-)
 
-### ADXL345 Setup
+### ADXL382 Setup
 
-#### Connecting ADXL345 to MAX32670
+#### Connecting ADXL382 to MAX32670
 
-The ADXL345 connects to MAX32670 over SPI1. This uses the following pins:
+The ADXL382 connects to MAX32670 over SPI0. There are silkscreen markings for SPI0 on the MAX32670 EVKit. ADXL382 uses the following pins:
 
 - V_AUX / GND
-- P0.14 (MISO)
-- P0.15 (MOSI)
-- P0.16 (SCK)
-- P0.17 (SS0)
+- P0.2 (SPI0 MISO)
+- P0.3 (SPI0 MOSI)
+- P0.4 (SPI0 SCK)
+- P0.5 (SPI0 SS0)
 
-If using a [Pmod™](https://digilent.com/reference/_media/reference/pmod/digilent-pmod-interface-specification.pdf) evaluation platform for the Accelerometer such as the [PmodACL](https://digilent.com/reference/pmod/pmodacl/start), the Pmod™ SPI standard interface can be used to connect the accelerometer. Pmod™ is a registered trademark of Digilent, Inc.
-
-![Pmod SPI Standard](img/pmod-spi-std.png)
-
-![ADXL345 Connection](img/adxl345pmod-max32670.jpg)
-![ADXL345 Solo](img/adxl-solo.jpg)
+![ADXL345 Connection](img/v2/adxl382-mcu.jpg)
+![ADXL345 Solo](img/v2/adxl382-solo.jpg)
 
 ### Final HW Setup
 
 The final hardware setup between Eval Kits looks like the below:
 
-![final HW setup](img/final-hw.jpg)
+![final HW setup](img/v2/system.jpg)
 
 Finally, connect a 6-24V, >20 mA supply to LOOP+/LOOP- on the AD5421 kit. Connect both USB ports and turn on the supply. If the Serial port output shows an error due to supply sequencing, try resetting the MAX32670 via the RSTN button (SW2).
+
+## Flashing the 'Prebuilt' Demo
+
+Under the `prebuilt` folder, there will be an ELF file that contains pre-built code. For those who do not want to compile the code themselves, the prebuilt binary may be flashed to the MCU instead. To do so, visit the following page:
+https://github.com/analogdevicesinc/max32625pico-firmware-images
+
+> [!Important]
+> Follow the instructions under the **"How to update the firmware?"** heading on the link above, holding down **SW4 on the MAX32670EVKIT** when you plug it in. Use the `max32625_max32670evkit_if_crc_swd_v1.0.3.bin` file inside the prebuilt/ folder or the MAX32670 file to update the programmer on the MAX32670 board.
+
+Once you have updated the above firmware, you should see a DAPLINK drive show up on your PC. At this point, you can drag-n-drop the .elf file onto the DAPLINK drive to program the prebuilt binary.
+
+![drag-n-drop](img/drag-n-drop-fw.png)
 
 ## Building the Software
 
