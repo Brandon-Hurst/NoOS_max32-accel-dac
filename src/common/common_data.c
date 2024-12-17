@@ -1,7 +1,7 @@
 /***************************************************************************//**
  *   @file   common_data.c
- *   @brief  Defines common data to be used by eval-adxl38x examples.
- *   @author BRajendran (balarupini.rajendran@analog.com)
+ *   @brief  Defines common data to be used by ADXL382/AD5421 examples.
+ *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
  *
@@ -86,17 +86,17 @@ struct ad5421_init_param ad5421_ip = {
 };
 
 /***** ADXL355 DEVICE SETUP *****/
-struct no_os_spi_init_param adxl345_spi_ip = {
+struct no_os_spi_init_param adxl_spi_ip = {
 	.device_id = ADXL_SPI_DEVICE_ID,
 	.max_speed_hz = SPI_BAUDRATE,
 	.bit_order = NO_OS_SPI_BIT_ORDER_MSB_FIRST,
-	.mode = NO_OS_SPI_MODE_3,
+	.mode = NO_OS_SPI_MODE_0,
 	.platform_ops = SPI_OPS,
 	.chip_select = ADXL_SPI_CS,
 	.extra = SPI_EXTRA,
 };
 
-struct no_os_i2c_init_param adxl345_i2c_ip = {
+struct no_os_i2c_init_param adxl_i2c_ip = {
 	.device_id = I2C_PORT,
 	.max_speed_hz = 400000,
 	.platform_ops = I2C_OPS,
@@ -106,10 +106,20 @@ struct no_os_i2c_init_param adxl345_i2c_ip = {
 };
 
 struct adxl345_init_param adxl345_ip = {
-	.i2c_init = &adxl345_i2c_ip,
-	.spi_init = &adxl345_spi_ip,
+	.i2c_init = &adxl_i2c_ip,
+	.spi_init = &adxl_spi_ip,
 	.dev_type = ID_ADXL345,
 	.communication_type = ADXL345_SPI_COMM,
 	.selected_range =  ADXL345_RANGE_PM_16G, // 2, 4, 8 , or 16G
 	.full_resolution_set = 1
+};
+
+/***** ADXL382 DEVICE SETUP *****/
+struct adxl38x_init_param adxl38x_ip = {
+	/** Device Communication initialization structure: either SPI or I2C */
+	// .comm_init.spi_init = adxl_spi_ip,
+	/** Device Communication type: ADXL38X_SPI_COMM, ADXL38X_I2C_COMM */
+	.comm_type = ADXL38X_SPI_COMM,
+	/** Device type: ADXL380 or 382 */
+	.dev_type = ID_ADXL382,
 };

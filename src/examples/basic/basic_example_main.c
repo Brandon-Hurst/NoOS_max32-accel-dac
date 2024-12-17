@@ -1,7 +1,7 @@
 /***************************************************************************//**
  *   @file   basic_example_main.c
- *   @brief  Main program for basic example eval-adxl38x project
- *   @author BRajendran (balarupini.rajendran@analog.com)
+ *   @brief  Main program for ADXL382 & AD5421 Example
+ *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
  *
@@ -44,6 +44,7 @@
 #include "mxc_sys.h"
 #include "ad5421.h"
 #include "adxl345.h"
+#include "adxl38x.h"
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
@@ -51,6 +52,9 @@
 #define CTRL_VLOOP_ALRT (1 << 5)
 #define NO_ALARM_FORCED_CURRENT (1 << 10)
 
+
+/***** AD5421 FUNCTIONS  *****/
+// Write a DAC register directly
 void ad5421_set_reg(struct ad5421_dev *dev, int32_t cmd, int32_t val) {
 	assert(dev);
 	assert(cmd & ~(0x80));
@@ -65,6 +69,7 @@ void ad5421_set_reg(struct ad5421_dev *dev, int32_t cmd, int32_t val) {
 		   &spi_data);
 }
 
+// Read a DAC register directly
 int32_t ad5421_get_reg(struct ad5421_dev *dev, int32_t cmd, int32_t val) {
 	assert(dev);
 	assert(cmd & (0x80));
@@ -80,11 +85,10 @@ int32_t ad5421_get_reg(struct ad5421_dev *dev, int32_t cmd, int32_t val) {
 	return spi_data;
 }
 
+// Output loop for the DAC
 int dac_test(struct ad5421_dev *ad5421_desc, int32_t dac) {
 	assert(ad5421_desc);
 	int32_t val;
-
-	// pr_info("Testing AD5421 dac...\n");
 
 	// DAC TEST
 	ad5421_set_dac(ad5421_desc, dac);
@@ -103,29 +107,22 @@ int dac_test(struct ad5421_dev *ad5421_desc, int32_t dac) {
 	return 0;
 }
 
-int adxl_test(struct adxl345_dev *adxl345_desc, float* x, float* y, float* z) {
-	assert(adxl345_desc);
-	uint16_t temp1, temp2;
-	uint16_t x_int,y_int,z_int = 0;
 
-	// pr_info("Testing adxl345 accelerometer...\n");
-
-	// adxl345_get_xyz(adxl345_desc, &x_int, &y_int , &z_int);
-	adxl345_get_g_xyz(adxl345_desc, x, y, z);
-
-	// pr_info("x: %d y: %d z: %d\n", x_int, y_int, z_int);
-	// pr_info("x: %f y: %f z: %f\n", *x, *y, *z);
-	pr_info("accel_z: \t%f g\n", *z);
-
-	return 0;
+/***** ADXL FUNCTIONS  *****/
+// Convert No-OS Accelerometer struct data into floating point
+float adxl38x_struct_to_float(struct adxl38x_fractional_val *acc_struct)
+{
+	return (float)(acc_struct->integer + (float)acc_struct->fractional / ADXL38X_ACC_SCALE_FACTOR_GEE_DIV);
 }
 
+// Convert 1 dimension of accelerometer data to the 16-bit DAC code
 void accel_1d_to_dac(uint16_t* dac, float accel_1d) {
 	assert(dac);
 	uint16_t ret=0;
 
 	// float val comes back normalized -1.0 to 1.0
 	// convert the range to 0x0000 to 0xFFFF uint16
+	// (-1.0 to 1.0 will be offset without calibration)
 	//
 	// -1.0 --> 0x0000
 	// 0.0 	--> 0x8000
@@ -141,28 +138,62 @@ void accel_1d_to_dac(uint16_t* dac, float accel_1d) {
 	*dac = (uint16_t)( (accel_1d / 2.0) * 0xFFFF );
 }
 
+// Measurement loop for accelerometer
+int adxl_test(struct adxl38x_dev *adxl_desc, float* x, float* y, float* z) {
+	assert(adxl_desc);
+
+	int ret;
+	uint16_t temp1, temp2;
+	uint16_t x_int,y_int,z_int = 0;
+	struct adxl38x_fractional_val
+		xf,
+		yf,
+		zf = {0, 0};
+
+	ret = adxl38x_get_xyz_gees(adxl_desc, ADXL38X_CH_EN_XYZT,
+					   &xf, &yf, &zf);
+
+	*x = adxl38x_struct_to_float(&xf);
+	*y = adxl38x_struct_to_float(&yf);
+	*z = adxl38x_struct_to_float(&zf);
+	pr_info(" x = %f g\n", *x);
+	pr_info(" y = %f g\n", *y);
+	pr_info(" z = %f g\n", *z);
+
+	return 0;
+}
+
 /***************************************************************************//**
  * @brief Example main execution.
  *
  * @return ret - Result of the example execution. If working correctly, will
  *               execute continuously the while(1) loop and will not return.
+ *
+ * @NOTE: 	DAC kits may have issues on arrival. For now, DAC errors are left
+ * 			as NON-BLOCKING. So DAC errors will print, but not stop the
+ * 			application.
 *******************************************************************************/
 int basic_example_main()
 {
 	struct ad5421_dev *ad5421_desc;
-	struct adxl345_dev *adxl345_desc;
-
-	int32_t ret, spi_data = 0;
-	uint8_t reg_value[10] = {0};
+	// struct adxl345_dev *adxl345_desc;
+	struct adxl38x_dev *adxl38x_desc;
+	union adxl38x_sts_reg_flags device_flags;
 	uint8_t device_id;
+	uint8_t device_range;
+	uint8_t opmode;
+
+	int32_t ret = 0;
+	int32_t spi_data = 0;
+	uint8_t reg_value[10] = {0};
 	struct no_os_uart_desc *uart_desc;
 
 	/* Initializing the device(s) */
-	pr_info("Starting ad5421_init...");
+	pr_info("START: ad5421_init...\n");
 	ret = ad5421_init(&ad5421_desc, ad5421_ip);
 	if (ret) {
 		pr_info("ERR during ad5421_init \tERR=%d\n", ret);
-		goto error;
+		// goto error;
 	}
 	spi_data += (
 			CTRL_AUTO_FAULT_RDBK |
@@ -173,42 +204,58 @@ int basic_example_main()
 	ad5421_set_reg(ad5421_desc, AD5421_CMDWRCTRL, spi_data);
 	ret = ad5421_get_reg(ad5421_desc, AD5421_CMDRDCTRL, spi_data);
 	if (ret != spi_data) {
-		pr_info("ERR during ad5421_init \tERR=%d\n", ret);
-		goto error;
+		pr_info("ERR during ad5421 status write \tERR=%d\n", ret);
+		// goto error;
 	}
 	else{ pr_info("Success!\n"); }
 
 
-	// pr_info("Starting adxl345_init...\n");
-	ret = adxl345_init(&adxl345_desc, adxl345_ip);
-	adxl345_set_power_mode(adxl345_desc, 0x1);
-	if (ret) {
-		pr_info("ERR during adxl345_init \tERR=%d\n", ret);
+	pr_info("\nSTART: adxl_init...\n");
+	ret = adxl38x_init(&adxl38x_desc, adxl38x_ip);
+	if (ret)
 		goto error;
-	}
-	else{ pr_info("Success!\n"); }
+	ret = adxl38x_soft_reset(adxl38x_desc);
+	if (ret == -EAGAIN)
+		pr_info("ADXL reset was not successful\n");
+	else if (ret)
+		goto error;
+	ret = adxl38x_get_sts_reg(adxl38x_desc, &device_flags);
+	if (ret)
+		goto error;
+	pr_info(" ADXL status value = 0x%08lx\n", (uint32_t)device_flags.value);
 
-	// Run basic initialization tasks here
-	ad5421_reset(ad5421_desc);
+	ret = adxl38x_set_op_mode(adxl38x_desc, ADXL38X_MODE_HP);
+	if (ret)
+		goto error;
+	ret = adxl38x_set_range(adxl38x_desc, ADXL382_RANGE_15G);
+	if (ret)
+		goto error;
+	ret = adxl38x_get_range(adxl38x_desc, &device_range);
+	if (ret)
+		goto error;
+	ret = adxl38x_get_deviceID(adxl38x_desc, &device_id);
+	if (adxl38x_desc->dev_type == ID_ADXL382)
+		pr_info(" ADXL Device Type = ADXL382\n");
+	else
+		pr_info(" ADXL Device Type = ADXL380\n");
 	no_os_mdelay(500);
 
 	int32_t dac = 0x0;
 	while(1) {
 		int32_t ret = 0;
-		float x, y, z = 0.0;
+		float xf, yf, zf = 0.0;
 
 		pr_info("\n");
 
-		ret = adxl_test(adxl345_desc, &x, &y, &z);
+		ret = adxl_test(adxl38x_desc, &xf, &yf, &zf);
 		if (ret) {goto error;}
 
-		accel_1d_to_dac(&dac, z);
-		// no_os_mdelay(2000);
+		accel_1d_to_dac(&dac, zf);
+		pr_info("AD5421 DAC Value: 0x%X\n", dac);
 
 		ret = dac_test(ad5421_desc, dac);
-		if (ret) {goto error;}
+		// if (ret) {goto error;}
 
-		// dac = (dac + 0x1111) % 0xFFFF;
 		no_os_mdelay(1000);
 	}
 

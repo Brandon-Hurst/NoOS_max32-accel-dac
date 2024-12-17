@@ -1,7 +1,7 @@
 /***************************************************************************//**
  *   @file   basic_example_main.h
- *   @brief  Main header for example eval-adxl38x project
- *   @author BRajendran (balarupini.rajendran@analog.com)
+ *   @brief  Main header for ADXL382 & AD5421 Example
+ *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
  *

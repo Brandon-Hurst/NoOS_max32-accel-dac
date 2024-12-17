@@ -1,7 +1,7 @@
 /***************************************************************************//**
  *   @file   parameters.c
- *   @brief  Definition of Maxim platform data used by eval-adxl355-pmdz project.
- *   @author BRajendran (balarupini.rajendran@analog.com)
+ *   @brief  Definition of Maxim platform data used by adxl382/ad5421 project.
+ *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
  *

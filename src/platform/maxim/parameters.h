@@ -1,8 +1,7 @@
 /***************************************************************************//**
  *   @file   parameters.h
- *   @brief  Definitions specific to Maxim platform used by eval-adxl38x
- *           project.
- *   @author BRajendran (balarupini.rajendran@analog.com)
+ *   @brief  Definitions specific to Maxim platform used by ADXL382/AD5421 example.
+ *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
  *
@@ -72,15 +71,15 @@
     #define UART_IRQ_ID     UART0_IRQn
 
     // SPI Device for AD5421
-    #define AD5421_SPI_DEVICE_ID    0
+    #define AD5421_SPI_DEVICE_ID    1
     #define AD5421_SPI_CS           0
-    #define ADXL_SPI_DEVICE_ID      1
-    #define ADXL_SPI_CS             0
-
     #define GPIO_FAULTIN_PORT_NUM   0
     #define GPIO_FAULTIN_PIN_NUM    29
     #define GPIO_LDAC_PORT_NUM      0
     #define GPIO_LDAC_PIN_NUM       30
+
+    #define ADXL_SPI_DEVICE_ID      0
+    #define ADXL_SPI_CS             0
 
     // I2C Port for ADXL345 if used
     #define I2C_PORT        0
