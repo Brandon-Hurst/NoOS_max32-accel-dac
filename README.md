@@ -33,6 +33,19 @@ To setup the AD5421 DAC, the Eval-SDP-CB1Z board must be used to power the AD542
 
 ![Eval-SDP-CB1Z to AD5421 connection](img/sdp-ad5421.jpg)
 
+#### [OPTIONAL] Troubleshooting with the AD5421 GUI
+
+Note that it is possible at this point to verify communication with the EVAL-AD5421 GUI. The GUI can be located on the [AD5421 Product Page](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/eval-ad5421.html#eb-relatedsoftware) under "_AD5421 Evaluation Software_".
+
+Once the Eval GUI has been installed, you can verify communication by connecting the SDP-BZ board to the AD5421 kit as shown in the above image, and connecting power over USB.
+
+Then, launch the GUI. You should see no popup warnings, and the Control Register is read by the GUI. You can also toggle various parameters such as the Auto Fault Readback to check that the Control Register can be be properly read & written, verifying SPI communication from the SDP-BZ board to the AD5421 and proper power-up for the AD5421.
+
+![AD5421 GUI](img/ad5421-gui.png)
+
+If communication to the AD5421 fails, a warning popup will show as follows:
+![AD5421 Communication Failure](img/ad5421-gui-fail.png)
+
 > [!warning]
 > Please disconnect power from all sources before continuing.
 >
