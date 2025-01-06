@@ -1,6 +1,11 @@
 
 # 4-20mA Accelerometer-Correlated Industrial Output
 
+> [!note]
+> This guide also is viewable at the following site: https://brandon-hurst.github.io/adi-documentation/eval/user-guide/eval-ad5421/index.html
+>
+> It will be upstreamed to the main ADI documentation repository shortly.
+
 This project uses the MAX32670 microcontroller with the ADXL382 accelerometer and AD5421 4-20mA DAC. The DAC output is correlated to the Z-axis of the accelerometer because it's usually the easiest to think about. When the ADXL IC is sitting flat on a table, for example, the normal vector in the Z-direction points fully up giving a normalized dot product of 1. Therefore, under these conditions the Z component of the ADXL output is +1.0. If you flip the ADXL, the Z component goes to -1.0.
 
 ![Final HW Powered](img/v2/system.jpg)
