@@ -92,7 +92,7 @@ The following jumpers are set by default for the AD5421 kit:
 
 The ADXL382 connects to MAX32670 over SPI0. There are silkscreen markings for SPI0 on the MAX32670 EVKit. ADXL382 uses the following pins:
 
-- V_AUX / GND
+- V_AUX (3.3V) / GND
 - P0.2 (SPI0 MISO)
 - P0.3 (SPI0 MOSI)
 - P0.4 (SPI0 SCK)
