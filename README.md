@@ -111,13 +111,13 @@ Finally, connect a 6-24V, >20 mA supply to LOOP+/LOOP- on the AD5421 kit. Connec
 
 ## Flashing the 'Prebuilt' Demo
 
-Under the `prebuilt` folder, there will be an ELF file that contains pre-built code. For those who do not want to compile the code themselves, the prebuilt binary may be flashed to the MCU instead. To do so, visit the following page:
+Under the `prebuilt` folder, there will be a .BIN (e.g. `adxl382-max32670-ad5421-v1.0.0.bin`) file that contains pre-built code. For those who do not want to compile the code themselves, the prebuilt binary may be flashed to the MCU instead. To do so, visit the following page:
 https://github.com/analogdevicesinc/max32625pico-firmware-images
 
 > [!Important]
 > Follow the instructions under the **"How to update the firmware?"** heading on the link above, holding down **SW4 on the MAX32670EVKIT** when you plug it in. Use the `max32625_max32670evkit_if_crc_swd_v1.0.3.bin` file inside the prebuilt/ folder or the MAX32670 file to update the programmer on the MAX32670 board.
 
-Once you have updated the above firmware, you should see a DAPLINK drive show up on your PC. At this point, you can drag-n-drop the .elf file onto the DAPLINK drive to program the prebuilt binary.
+Once you have updated the above firmware, you should see a DAPLINK drive show up on your PC. At this point, you can drag-n-drop the .BIN file onto the DAPLINK drive to program the prebuilt binary.
 
 ![drag-n-drop](img/drag-n-drop-fw.png)
 
