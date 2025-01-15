@@ -80,7 +80,7 @@ struct no_os_gpio_init_param ad5421_faultin_ip = {
 };
 
 struct ad5421_init_param ad5421_ip = {
-	.spi_init = &ad5421_spi_ip,
+	// .spi_init = &ad5421_spi_ip,
 	.gpio_ldac = &ad5421_ldac_ip,
 	.gpio_faultin = &ad5421_faultin_ip,
 };

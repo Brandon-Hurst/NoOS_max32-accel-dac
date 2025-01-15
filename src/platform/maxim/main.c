@@ -52,6 +52,7 @@ int main()
 	int ret = -EINVAL;
 
 	adxl38x_ip.comm_init.spi_init = adxl_spi_ip;
+	ad5421_ip.spi_init = ad5421_spi_ip;
 
 	struct no_os_uart_desc *uart_desc;
 
