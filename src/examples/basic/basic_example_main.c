@@ -94,7 +94,7 @@ int dac_test(struct ad5421_dev *ad5421_desc, int32_t dac) {
 	ad5421_set_dac(ad5421_desc, dac);
 	val = ad5421_get_fault(ad5421_desc);
 	if (val) {
-		pr_info("DAC FAULT! 0x%X\n", val);
+		pr_info("DAC Fault Status Reg: 0x%X\n", val);
 		return -1;
 	}
 	val = ad5421_get_dac(ad5421_desc);
@@ -187,6 +187,13 @@ int basic_example_main()
 	uint8_t reg_value[10] = {0};
 	struct no_os_uart_desc *uart_desc;
 
+	// Delay to prevent lockouts
+	no_os_mdelay(2000);
+
+	// Print version
+	pr_info("ADXL38x ACCEL + AD5421 4-20mA DAC\n");
+	pr_info("v1.1.0\n");
+
 	/* Initializing the device(s) */
 	pr_info("START: ad5421_init...\n");
 	ret = ad5421_init(&ad5421_desc, ad5421_ip);
@@ -203,7 +210,7 @@ int basic_example_main()
 	ad5421_set_reg(ad5421_desc, AD5421_CMDWRCTRL, spi_data);
 	ret = ad5421_get_reg(ad5421_desc, AD5421_CMDRDCTRL, spi_data);
 	if (ret != spi_data) {
-		pr_info("ERR during ad5421 status write \tERR=%d\n", ret);
+		pr_info("ERR during ad5421 status write", ret);
 		// goto error;
 	}
 	else{ pr_info("Success!\n"); }
@@ -255,7 +262,7 @@ int basic_example_main()
 		ret = dac_test(ad5421_desc, dac);
 		// if (ret) {goto error;}
 
-		no_os_mdelay(1000);
+		// no_os_mdelay(1000);
 	}
 
 error:
