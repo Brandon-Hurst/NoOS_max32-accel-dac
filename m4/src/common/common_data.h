@@ -1,6 +1,6 @@
 /***************************************************************************//**
- *   @file   basic_example_main.h
- *   @brief  Main header for ADXL382 & AD5421 Example
+ *   @file   common_data.h
+ *   @brief  Defines common data to be used by ADXL382/AD5421 example.
  *   @author Brandon Hurst (brandon.hurst@analog.com)
 ********************************************************************************
  * Copyright 2024(c) Analog Devices, Inc.
@@ -30,12 +30,29 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
-#ifndef __BASIC_EXAMPLE_MAIN_H__
-#define __BASIC_EXAMPLE_MAIN_H__
+#ifndef __COMMON_DATA_H__
+#define __COMMON_DATA_H__
 
 /******************************************************************************/
-/************************ Functions Declarations ******************************/
+/***************************** Include Files **********************************/
 /******************************************************************************/
-int basic_example_main();
+#include "platform_includes.h"
+#include "ad5421.h"
+#include "adxl38x.h"
 
-#endif /* __EXAMPLE_MAIN_H__ */
+#ifdef MAXIM_PLATFORM
+#include "maxim/parameters.h"
+#endif
+
+/******************************************************************************/
+/********************** Macros and Constants Definitions **********************/
+/******************************************************************************/
+extern struct no_os_uart_init_param uart_ip;
+extern struct no_os_spi_init_param ad5421_spi_ip;
+extern struct no_os_spi_init_param adxl_spi_ip;
+extern struct no_os_i2c_init_param adxl_i2c_ip;
+extern struct ad5421_init_param ad5421_ip;
+extern struct adxl38x_init_param adxl38x_ip;
+
+
+#endif /* __COMMON_DATA_H__ */

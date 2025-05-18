@@ -1,0 +1,16 @@
+{
+    "folders": [
+      {
+        "path": "m4"
+      }
+    ],
+    "settings": {
+      "cfs.configureWorkspace": "Yes",
+      "terminal.integrated.defaultProfile.windows": "CFS Terminal",
+      "terminal.integrated.defaultProfile.osx": "CFS Terminal",
+      "terminal.integrated.defaultProfile.linux": "CFS Terminal",
+      "cortex-debug.variableUseNaturalFormat": false,
+      "cfs.openHomePageAtStartup": "No",
+      "cfs.home.openAtStartup": "No",
+    }
+  }

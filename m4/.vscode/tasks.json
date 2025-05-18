@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "(echo rst 0 && echo loadfile ${command:cfs.selectProgramFile} && echo r && echo q) | \"${command:cfs.jlink.setJlinkPath}/JLink.exe\" -device ${command:cfs.jlink.setDevice} -if SWD -speed 4000 -autoconnect 1 -NoGui 1 -ExitOnError 1",
+      "options": {
+        "cwd": "c:/workspace/customers/baker/NoOs_max32-accel-dac/m4",
+        "env": {
+          "PATH": "C:/analog/cfs/1.1.1/Utils/cfsutil/bin;C:/analog/cfs/1.1.1/Tools/cmake/bin;C:/analog/cfs/1.1.1/Tools/dtc/bin;C:/analog/cfs/1.1.1/Tools/gcc/arm-none-eabi/bin;C:/analog/cfs/1.1.1/Tools/gcc/riscv-none-elf/bin;C:/analog/cfs/1.1.1/Tools/git/cmd;C:/analog/cfs/1.1.1/Tools/git/bin;C:/analog/cfs/1.1.1/Tools/git/usr/bin;C:/analog/cfs/1.1.1/Tools/openocd/bin;C:/analog/cfs/1.1.1/Tools/python;C:/analog/cfs/1.1.1/Tools/python/bin;C:/analog/cfs/1.1.1/Tools/python/Scripts;C:/analog/cfs/1.1.1/Tools/zephyr-sdk/arm-zephyr-eabi/bin;C:/analog/cfs/1.1.1;C:/Program Files/SEGGER/JLink_V814;C:\\msys64\\mingw64\\bin;C:\\msys64\\usr\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\Wbem;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\bin;C:\\Program Files\\GitHub CLI\\;C:\\Program Files\\SEGGER\\JLink_V780c;C:\\MaximSDK\\Tools\\OpenOCD;C:\\MaximSDK\\Tools\\MSYS2\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python310\\;C:\\Program Files\\Pandoc\\;C:\\Program Files\\qemu;C:\\Program Files\\Nordic Semiconductor\\nrf-command-line-tools\\bin\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\MATLAB\\R2023b\\runtime\\win64;C:\\Program Files\\MATLAB\\R2023b\\bin;C:\\Program Files\\WinMerge;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\ShareFile\\ShareFile for Windows\\;C:\\Program Files\\Meld\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files (x86)\\GnuPG\\bin;C:\\Program Files\\usbipd-win\\;C:\\Program Files\\dotnet\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\BHurst\\AppData\\Local\\Programs\\oh-my-posh\\bin\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\BHurst\\.pyenv\\pyenv-win\\bin;C:\\Users\\BHurst\\.pyenv\\pyenv-win\\shims;C:\\Program Files\\JetBrains\\PyCharm Community Edition 2023.2.4\\bin;C:\\Program Files (x86)\\Nmap;C:\\MaximSDK\\Tools\\MSYS2;C:\\Program Files\\Pandoc;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Cppcheck;C:\\Users\\BHurst\\.cargo\\bin;C:\\Program Files\\doxygen\\bin;C:\\analog\\cfs\\1.0.1\\Tools\\gcc\\arm-none-eabi\\bin;C:\\Users\\BHurst\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\BHurst\\AppData\\Roaming\\npm;C:\\Users\\BHurst\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\BHurst\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Notepad++;C:\\workspace\\tools\\ansi189-bin\\x64;C:\\Program Files\\SEGGER\\JLink_V814;C:\\msys64\\usr\\bin;",
+          "MAXIM_PATH": "C:\\analog\\cfs\\1.1.1\\SDK\\MAX",
+          "PYTHON_CMD": "none",
+          "CMAKE_PREFIX_PATH": "C:\\analog\\cfs\\1.1.1\\Tools\\zephyr-sdk",
+          "GIT_EXEC_PATH": "",
+          "ZEPHYR_BASE": "${config:cfs.sdk.path}/SDK/zephyr/zephyr"
+        },
+        "shell": {
+          "args": [
+            "/c"
+          ],
+          "executable": "${env:windir}\\System32\\cmd.exe"
+        }
+      },
+      "group": "build",
+      "label": "CFS: flash & run (JLink)"
+    },
+    {
+      "type": "shell",
+      "command": "(echo loadfile ${command:cfs.selectProgramFile} && echo q) | \"${command:cfs.jlink.setJlinkPath}/JLink.exe\" -device ${command:cfs.jlink.setDevice} -if SWD -speed 4000 -autoconnect 1 -NoGui 1 -ExitOnError 1",
+      "options": {
+        "cwd": "c:/workspace/customers/baker/NoOS_max32-accel-dac/m4",
+        "env": {
+          "PATH": "C:/analog/cfs/1.1.1/Utils/cfsutil/bin;C:/analog/cfs/1.1.1/Tools/cmake/bin;C:/analog/cfs/1.1.1/Tools/dtc/bin;C:/analog/cfs/1.1.1/Tools/gcc/arm-none-eabi/bin;C:/analog/cfs/1.1.1/Tools/gcc/riscv-none-elf/bin;C:/analog/cfs/1.1.1/Tools/git/cmd;C:/analog/cfs/1.1.1/Tools/git/bin;C:/analog/cfs/1.1.1/Tools/git/usr/bin;C:/analog/cfs/1.1.1/Tools/openocd/bin;C:/analog/cfs/1.1.1/Tools/python;C:/analog/cfs/1.1.1/Tools/python/bin;C:/analog/cfs/1.1.1/Tools/python/Scripts;C:/analog/cfs/1.1.1/Tools/zephyr-sdk/arm-zephyr-eabi/bin;C:/analog/cfs/1.1.1;C:/Program Files/SEGGER/JLink_V814;C:\\msys64\\mingw64\\bin;C:\\msys64\\usr\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\Wbem;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Git\\bin;C:\\Program Files\\GitHub CLI\\;C:\\Program Files\\SEGGER\\JLink_V780c;C:\\MaximSDK\\Tools\\OpenOCD;C:\\MaximSDK\\Tools\\MSYS2\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python310\\;C:\\Program Files\\Pandoc\\;C:\\Program Files\\qemu;C:\\Program Files\\Nordic Semiconductor\\nrf-command-line-tools\\bin\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\MATLAB\\R2023b\\runtime\\win64;C:\\Program Files\\MATLAB\\R2023b\\bin;C:\\Program Files\\WinMerge;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\ShareFile\\ShareFile for Windows\\;C:\\Program Files\\Meld\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files (x86)\\GnuPG\\bin;C:\\Program Files\\usbipd-win\\;C:\\Program Files\\dotnet\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Users\\BHurst\\AppData\\Local\\Programs\\oh-my-posh\\bin\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\BHurst\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\BHurst\\.pyenv\\pyenv-win\\bin;C:\\Users\\BHurst\\.pyenv\\pyenv-win\\shims;C:\\Program Files\\JetBrains\\PyCharm Community Edition 2023.2.4\\bin;C:\\Program Files (x86)\\Nmap;C:\\MaximSDK\\Tools\\MSYS2;C:\\Program Files\\Pandoc;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Cppcheck;C:\\Users\\BHurst\\.cargo\\bin;C:\\Program Files\\doxygen\\bin;C:\\analog\\cfs\\1.0.1\\Tools\\gcc\\arm-none-eabi\\bin;C:\\Users\\BHurst\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\BHurst\\AppData\\Roaming\\npm;C:\\Users\\BHurst\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\BHurst\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Notepad++;C:\\workspace\\tools\\ansi189-bin\\x64;C:\\Program Files\\SEGGER\\JLink_V814;C:\\msys64\\usr\\bin;",
+          "MAXIM_PATH": "C:\\analog\\cfs\\1.1.1\\SDK\\MAX",
+          "PYTHON_CMD": "none",
+          "CMAKE_PREFIX_PATH": "C:\\analog\\cfs\\1.1.1\\Tools\\zephyr-sdk",
+          "GIT_EXEC_PATH": "",
+          "ZEPHYR_BASE": "${config:cfs.sdk.path}/SDK/zephyr/zephyr"
+        },
+        "shell": {
+          "args": [
+            "/c"
+          ],
+          "executable": "${env:windir}\\System32\\cmd.exe"
+        }
+      },
+      "group": "build",
+      "label": "CFS: flash (JLink)"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "C_Cpp.default.forcedInclude": [
+    "${workspaceFolder}/build/project_defines.h"
+  ],
+  "cfs.project.target": "MAX32670",
+  "cfs.project.board": "EvKit_V1",
+  "cfs.programFile": "${workspaceFolder}/build/${workspaceFolderBasename}.elf",
+  "cfs.configureWorkspace": "Yes",
+  "cfs.project.firmwarePlatform": "MSDK",
+  "cfs.openocd.target": "${config:cfs.openocd.path}/share/openocd/scripts/target/MAX32670.cfg",
+  "cfs.openocd.interface": "interface/cmsis-dap.cfg",
+  "cfs.openocd.riscvInterface": "interface/ftdi/olimex-arm-usb-ocd-h.cfg",
+  "cfs.cmsis.svdFile": "${config:cfs.sdk.path}/SDK/MAX/Libraries/CMSIS/Device/Maxim/MAX32670/Include/max32670.svd",
+  "cfs.openHomePageAtStartup": "Yes",
+  "cfs.debugPath": "${workspaceFolder}/build"
+}
