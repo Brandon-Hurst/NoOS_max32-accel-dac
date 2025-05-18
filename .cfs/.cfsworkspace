@@ -1,0 +1,10 @@
+{
+  "Soc": "MAX32670",
+  "Package": "TQFN",
+  "WorkspacePluginId": "com.analog.singlecore.msdk.helloworld",
+  "WorkspacePluginVersion": "1.0.0",
+  "WorkspaceName": "max32670_cfs",
+  "Location": "C:/workspace/",
+  "Board": "EvKit_V1",
+  "Projects": []
+}

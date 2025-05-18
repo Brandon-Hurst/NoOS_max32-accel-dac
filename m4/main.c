@@ -54,8 +54,13 @@
 #define CTRL_VLOOP_ALRT (1 << 5)
 #define NO_ALARM_FORCED_CURRENT (1 << 10)
 
-/***** WATCHDOG FUNCTIONS ******/
+// TODO (low prior): LP mode not yet implemented
+#define DO_SLEEP    0
+#define USE_WDT     0
+
+/***** FUNCTIONS ******/
 // *****************************************************************************
+#if USE_WDT
 void WDT0_IRQHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
@@ -64,8 +69,8 @@ void WDT0_IRQHandler(void)
     // Attempt to reset the WDT for mitigation before reset
     // MXC_WDT_ResetTimer(MXC_WDT0);
 }
-// *****************************************************************************
-void MXC_WDT_Setup(void)
+
+void WDT_Setup(void)
 {
     static mxc_wdt_cfg_t cfg = {};
 
@@ -89,7 +94,7 @@ void MXC_WDT_Setup(void)
     NVIC_EnableIRQ(WDT0_IRQn);
     MXC_WDT_Enable(MXC_WDT0);
 }
-
+#endif
 
 /***** AD5421 FUNCTIONS  *****/
 // Write a DAC register directly
@@ -200,7 +205,10 @@ int adxl_test(struct adxl38x_dev *adxl_desc, double* x, double* y, double* z) {
     return 0;
 }
 
-/***************************************************************************//**
+/******************************************************************************/
+/**************************** Main Application ********************************/
+/******************************************************************************/
+/*******************************************************************************
  * @brief Example main execution.
  *
  * @return ret - Result of the example execution. If working correctly, will
@@ -221,6 +229,15 @@ int main(void)
     struct adxl38x_dev *adxl38x_desc;
     union adxl38x_sts_reg_flags device_flags;
 
+    // Delay to prevent lockouts if using Low Power modes
+    #if DO_SLEEP
+    no_os_mdelay(2000);
+    #endif
+
+    #if USE_WDT
+    WDT_Setup();
+    #endif
+
     /* Init UART & bind to STDIO */
 	struct no_os_uart_desc *uart_desc;
 	ret = no_os_uart_init(&uart_desc, &uart_ip);
@@ -228,14 +245,11 @@ int main(void)
 		return ret;
 	no_os_uart_stdio(uart_desc);
 
-    // Delay to prevent lockouts if using Low Power modes
-    no_os_mdelay(2000);
-
-    // Print version
+    /* Print version */
     printf("ADXL38x ACCEL + AD5421 4-20mA DAC\n");
     printf("v1.2.0\n");
 
-    /* Initializing the AD5421 DAC */
+    /* Initialize the AD5421 DAC */
     printf("START: ad5421_init...\n");
     ret = ad5421_init(&ad5421_desc, ad5421_ip);
     if (ret) {
@@ -258,15 +272,15 @@ int main(void)
         printf("Success!\n");
     }
 
-    printf("AD5421 Register Config:\n");
-
+    /* Print AD5421 Registers */
+    printf("AD5421 Registers:\n");
     for (int i = 0; i < 5; i++) {
         ret = ad5421_get_reg(ad5421_desc, AD5421_CMDRDDAC + i, spi_data);
-        printf("0x%X == 0x%X\n", AD5421_CMDRDDAC + i, ret);
+        printf("0x%X ==> 0x%X\n", AD5421_CMDRDDAC + i, ret);
     }
     printf("\n\n");
-    printf("Delaying 5 sec...\n");
-    no_os_mdelay(5000);
+    printf("Delaying 1 sec...\n");
+    no_os_mdelay(1000);
 
     /*** Initialize the ADXL38x accelerometer ***/
     printf("\nSTART: adxl_init...\n");
@@ -299,7 +313,7 @@ int main(void)
         printf(" ADXL Device Type = ADXL380\n");
     no_os_mdelay(500);
 
-    // Configure LED2
+    /* Configure LED2 for running indicator */
     mxc_gpio_cfg_t led2_cfg = {
         .port = MXC_GPIO0,
         .mask = MXC_GPIO_PIN_23,
@@ -308,30 +322,36 @@ int main(void)
     };
     MXC_GPIO_Config(&led2_cfg);
 
+    /* MAIN LOOP : Read accelerometer and program DAC 4-20mA loop current */
     static uint16_t dac = 0x0;
     static double xf, yf, zf = 0.0;
     while(1) {
+
+        /* Reset the Watchdog Timer (if used) */
+        #if USE_WDT
+        __disable_irq();
+        MXC_WDT_ResetTimer(MXC_WDT0);
+        __enable_irq();
+        #endif
+
         printf("\n");
 
+        /* Read the accelerometer */
         ret = adxl_test(adxl38x_desc, &xf, &yf, &zf);
         if (ret) {
             goto error;
         }
 
+        /* Convert single-axis accelerometer data to DAC Code and print */
         accel_1d_to_dac(&dac, zf);
         printf("AD5421 DAC Value: 0x%X\n", dac);
 
+        /* Program DAC with converted value */
         ret = dac_test(ad5421_desc, dac);
-
-        // Reset the Watchdog
-        __disable_irq();
-        MXC_WDT_ResetTimer(MXC_WDT0);
-        __enable_irq();
-
         // if (ret) {goto error;}
-        no_os_mdelay(500);
 
-        // Set LED2
+        /* Delay and toggle a "running" LED */
+        no_os_mdelay(500);
         MXC_GPIO_OutToggle(MXC_GPIO0, MXC_GPIO_PIN_23);
     }
 
