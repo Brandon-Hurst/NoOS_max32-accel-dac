@@ -52,8 +52,8 @@ VPATH += ./drivers
 IPATH += ./drivers
 
 # #Add just the No-Os drivers we want to use
-VPATH += $(NO_OS_ROOT)/drivers/dac/ad5421
-IPATH += $(NO_OS_ROOT)/drivers/dac/ad5421
+VPATH += ./ad5421
+IPATH += ./ad5421
 VPATH += $(NO_OS_ROOT)/drivers/accel/adxl38x
 IPATH += $(NO_OS_ROOT)/drivers/accel/adxl38x
 #################################################

@@ -59,6 +59,7 @@ static struct max_spi_init_param max_spi_param =
 {
     .num_slaves = 1,
     .polarity = SPI_SS_POL_LOW,
+	.vssel = MXC_GPIO_VSSEL_VDDIOH,
 };
 
 /***** ADXL382 DEVICE SETUP *****/

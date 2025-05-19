@@ -64,7 +64,7 @@
 void WDT0_IRQHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
-    printf("\n WATCHDOG TIMEOUT! \n");
+    // printf("\n WATCHDOG TIMEOUT! \n");
 
     // Attempt to reset the WDT for mitigation before reset
     // MXC_WDT_ResetTimer(MXC_WDT0);
@@ -137,13 +137,13 @@ int dac_test(struct ad5421_dev *ad5421_desc, int32_t dac) {
     ad5421_set_dac(ad5421_desc, dac);
     val = ad5421_get_fault(ad5421_desc);
     if (val) {
-        printf("DAC Fault Status Reg: 0x%X\n", val);
+        // printf("DAC Fault Status Reg: 0x%X\n", val);
         return -1;
     }
     val = ad5421_get_dac(ad5421_desc);
-    printf("DAC VALUE: \t0x%X \n", dac);
+    // printf("DAC VALUE: \t0x%X \n", dac);
     if (val != dac) {
-        printf("ERR: Failed to set DAC Value \n");
+        // printf("ERR: Failed to set DAC Value \n");
         return -1;
     }
 
@@ -199,8 +199,8 @@ int adxl_test(struct adxl38x_dev *adxl_desc, double* x, double* y, double* z) {
     *x = adxl38x_struct_to_float(&xf);
     *y = adxl38x_struct_to_float(&yf);
     *z = adxl38x_struct_to_float(&zf);
-    printf(" x = %f g, y = %f g, z = %f g\n", *x, *y, *z);
-    printf("accel_z: \t%f\n", *z);
+    // printf(" x = %f g, y = %f g, z = %f g\n", *x, *y, *z);
+    // printf("accel_z: \t%f\n", *z);
 
     return 0;
 }
@@ -229,6 +229,16 @@ int main(void)
     struct adxl38x_dev *adxl38x_desc;
     union adxl38x_sts_reg_flags device_flags;
 
+    /* Configure LED2 for running indicator */
+    mxc_gpio_cfg_t led2_cfg = {
+        .port = MXC_GPIO0,
+        .mask = MXC_GPIO_PIN_23,
+        .func = MXC_GPIO_FUNC_OUT,
+        .vssel = MXC_GPIO_VSSEL_VDDIOH
+    };
+    MXC_GPIO_Config(&led2_cfg);
+    MXC_GPIO_OutClr(MXC_GPIO0, MXC_GPIO_PIN_23);
+
     // Delay to prevent lockouts if using Low Power modes
     #if DO_SLEEP
     no_os_mdelay(2000);
@@ -246,14 +256,14 @@ int main(void)
 	no_os_uart_stdio(uart_desc);
 
     /* Print version */
-    printf("ADXL38x ACCEL + AD5421 4-20mA DAC\n");
-    printf("v1.2.0\n");
+    // printf("ADXL38x ACCEL + AD5421 4-20mA DAC\n");
+    // printf("v1.2.0\n");
 
     /* Initialize the AD5421 DAC */
-    printf("START: ad5421_init...\n");
+    // printf("START: ad5421_init...\n");
     ret = ad5421_init(&ad5421_desc, ad5421_ip);
     if (ret) {
-        printf("ERR during ad5421_init \tERR=%d\n", ret);
+        // printf("ERR during ad5421_init \tERR=%d\n", ret);
         // goto error;
     }
     spi_data += (
@@ -265,62 +275,61 @@ int main(void)
     ad5421_set_reg(ad5421_desc, AD5421_CMDWRCTRL, spi_data);
     ret = ad5421_get_reg(ad5421_desc, AD5421_CMDRDCTRL, spi_data);
     if (ret != spi_data) {
-        printf("ERR during ad5421 status write", ret);
+        // printf("ERR during ad5421 status write", ret);
         // goto error;
     }
     else {
-        printf("Success!\n");
+        // printf("Success!\n");
     }
 
     /* Print AD5421 Registers */
-    printf("AD5421 Registers:\n");
+    // printf("AD5421 Registers:\n");
     for (int i = 0; i < 5; i++) {
         ret = ad5421_get_reg(ad5421_desc, AD5421_CMDRDDAC + i, spi_data);
-        printf("0x%X ==> 0x%X\n", AD5421_CMDRDDAC + i, ret);
+        // printf("0x%X ==> 0x%X\n", AD5421_CMDRDDAC + i, ret);
     }
-    printf("\n\n");
-    printf("Delaying 1 sec...\n");
+    // printf("\n\n");
+    // printf("Delaying 1 sec...\n");
     no_os_mdelay(1000);
 
     /*** Initialize the ADXL38x accelerometer ***/
-    printf("\nSTART: adxl_init...\n");
+    // printf("\nSTART: adxl_init...\n");
     ret = adxl38x_init(&adxl38x_desc, adxl38x_ip);
     if (ret)
         goto error;
     ret = adxl38x_soft_reset(adxl38x_desc);
-    if (ret == -EAGAIN)
-        printf("ADXL reset was not successful\n");
-    else if (ret)
+    if (ret == -EAGAIN){
+        // printf("ADXL reset was not successful\n");
+    }
+    else if (ret) {
         goto error;
+    }
     ret = adxl38x_get_sts_reg(adxl38x_desc, &device_flags);
-    if (ret)
+    if (ret) {
         goto error;
-    printf(" ADXL status value = 0x%08lx\n", (uint32_t)device_flags.value);
+    }
+    // printf(" ADXL status value = 0x%08lx\n", (uint32_t)device_flags.value);
 
     ret = adxl38x_set_op_mode(adxl38x_desc, ADXL38X_MODE_HP);
-    if (ret)
+    if (ret) {
         goto error;
+    }
     ret = adxl38x_set_range(adxl38x_desc, ADXL382_RANGE_15G);
-    if (ret)
+    if (ret) {
         goto error;
+    }
     ret = adxl38x_get_range(adxl38x_desc, &device_range);
-    if (ret)
+    if (ret) {
         goto error;
+    }
     ret = adxl38x_get_deviceID(adxl38x_desc, &device_id);
-    if (adxl38x_desc->dev_type == ID_ADXL382)
-        printf(" ADXL Device Type = ADXL382\n");
-    else
-        printf(" ADXL Device Type = ADXL380\n");
+    if (adxl38x_desc->dev_type == ID_ADXL382) {
+        // printf(" ADXL Device Type = ADXL382\n");
+    }
+    else {
+        // printf(" ADXL Device Type = ADXL380\n");
+    }
     no_os_mdelay(500);
-
-    /* Configure LED2 for running indicator */
-    mxc_gpio_cfg_t led2_cfg = {
-        .port = MXC_GPIO0,
-        .mask = MXC_GPIO_PIN_23,
-        .func = MXC_GPIO_FUNC_OUT,
-        .vssel = MXC_GPIO_VSSEL_VDDIOH
-    };
-    MXC_GPIO_Config(&led2_cfg);
 
     /* MAIN LOOP : Read accelerometer and program DAC 4-20mA loop current */
     static uint16_t dac = 0x0;
@@ -334,7 +343,7 @@ int main(void)
         __enable_irq();
         #endif
 
-        printf("\n");
+        // printf("\n");
 
         /* Read the accelerometer */
         ret = adxl_test(adxl38x_desc, &xf, &yf, &zf);
@@ -344,7 +353,7 @@ int main(void)
 
         /* Convert single-axis accelerometer data to DAC Code and print */
         accel_1d_to_dac(&dac, zf);
-        printf("AD5421 DAC Value: 0x%X\n", dac);
+        // printf("AD5421 DAC Value: 0x%X\n", dac);
 
         /* Program DAC with converted value */
         ret = dac_test(ad5421_desc, dac);
@@ -356,7 +365,7 @@ int main(void)
     }
 
 error:
-    printf("Error!\n");
+    // printf("Error!\n");
     ad5421_remove(ad5421_desc);
     adxl38x_remove(adxl38x_desc);
     return 0;
